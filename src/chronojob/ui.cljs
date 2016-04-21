@@ -91,7 +91,7 @@
        [:div.panel-body
         [:ul.list-group
          [:li.list-group-item.list-group-item-success "completed" [:span.badge (:completed last-hour "-")]]
-         [:li.list-group-item.list-group-item-danger "failed" [:span.badge (:completed last-hour "-")]]]]]]
+         [:li.list-group-item.list-group-item-danger "failed" [:span.badge (:failed last-hour "-")]]]]]]
      [:div.col-md-4
       [:div.panel.panel-default
        [:div.panel-heading
