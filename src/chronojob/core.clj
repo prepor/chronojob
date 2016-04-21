@@ -237,9 +237,9 @@
 
 (defn -main
   [config-path]
-  (let [s (system config-path)]
-    (component/start s)
-    (info/log "System started")
+  (let [s (-> (system config-path)
+              (component/start))]
+    (log/info "System started")
     (at-shutdown #(component/stop s))
     (while true
       (Thread/sleep 1000))))

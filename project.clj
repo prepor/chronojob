@@ -33,9 +33,10 @@
                  [net.kencochrane.raven/raven-logback "6.0.0"]
 
                  [cljs-http "0.1.39"]
+                 [org.clojure/clojurescript "1.7.228"]
                  [rum "0.8.0"]]
   :jvm-opts ["-Duser.timezone=GMT"]
-  :clean-targets ^{:protect false} ["resources/public/js/compiled" "target"]
+  :clean-targets ^{:protect false} ["resources/public/js/" "target"]
   :plugins [[lein-figwheel "0.5.2"]
             [lein-cljsbuild "1.1.3" :exclusions [[org.clojure/clojure]]]]
   :cljsbuild {:builds [{:id "dev"
