@@ -3,6 +3,7 @@
             [clojure.java.jdbc :as jdbc]
             [clojure.string :as str]
             [clojure.tools.logging :as log]
+            clj-time.jdbc
             [honeysql
              [core :as honey]
              [format :as honey-format]
