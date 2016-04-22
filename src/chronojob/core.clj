@@ -99,7 +99,8 @@
 
 (defhandler index
   []
-  (response/resource-response "/public/static/index.html"))
+  (-> (response/resource-response "/public/static/index.html")
+      (assoc-in [:headers "content-type"] "text/html")))
 
 (defhandler job
   [[:component db]

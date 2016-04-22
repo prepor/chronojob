@@ -53,21 +53,21 @@
 (defn receive-stats
   []
   (go
-    (let [res (a/<! (http/get "/dashboard/stats" {:query-params {:tags (:selected-tags @astate)}}))]
+    (let [res (a/<! (http/get "dashboard/stats" {:query-params {:tags (:selected-tags @astate)}}))]
       (when (= 200 (:status res))
         (swap! astate assoc :stats (:body res))))))
 
 (defn receive-tags
   []
   (go
-    (let [res (a/<! (http/get "/dashboard/tags"))]
+    (let [res (a/<! (http/get "dashboard/tags"))]
       (when (= 200 (:status res))
         (swap! astate assoc :tags (set (get-in res [:body :tags])))))))
 
 (defn receive-jobs
   []
   (go
-    (let [res (a/<! (http/get "/dashboard/jobs"
+    (let [res (a/<! (http/get "dashboard/jobs"
                               {:query-params (assoc-when {:tags (:selected-tags @astate)}
                                                          :search (:search @astate)
                                                          :status (:status @astate))}))]
