@@ -12,7 +12,7 @@
 (defn do-clean
   [comp retention-period]
   (let [cond [(str "completed_at < now() - interval '" retention-period " hours'"
-                   " AND status = 'completed'")]
+                   " AND status in ('completed', 'failed')")]
         _ (log/infof "Removing jobs with condition '%s'" cond)
         res (-> (jdbc/delete! (:db comp) :jobs cond) (first))]
     (when (pos? res)
