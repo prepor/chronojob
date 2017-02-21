@@ -11,20 +11,28 @@
 
 (defn do-clean
   [comp retention-period]
-  (let [cond [(str "do_at < now() - interval '" retention-period " hours'"
-                   " AND created_at < now() - interval '" retention-period " hours'")]
+  (let [cond [(str "completed_at < now() - interval '" retention-period " hours'"
+                   " AND status = 'completed'")]
+        _ (log/infof "Removing jobs with condition '%s'" cond)
         res (-> (jdbc/delete! (:db comp) :jobs cond) (first))]
     (when (pos? res)
       (log/info "Jobs deleted because retention period had expired"
                 {:jobs res :retention-period retention-period}))))
+
+(def ten-minutes (* 10 60 1000))
 
 (defn cleaner-process
   [comp retention-period]
   (let [stopper (a/promise-chan)
         worker (a/go-loop []
                  (a/alt!
-                   (a/timeout 60000) ([_] (do-clean comp retention-period) (recur))
-                   stopper ([_])))]
+                   (a/timeout ten-minutes)
+                   ([_]
+                    (do-clean comp retention-period)
+                    (recur))
+
+                   stopper
+                   ([_])))]
     (fn [] (a/close! stopper) (a/<!! worker))))
 
 (defn do-rescue
@@ -71,3 +79,8 @@
   (stop [this]
         ((:process this))
         this))
+
+(comment
+  (let [db (get reloaded.repl/system chronojob.hikaricp/db)]
+    (do-clean {:db db} (* 24 3))))
+
