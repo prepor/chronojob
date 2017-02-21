@@ -34,6 +34,7 @@
   (let [stopper (a/promise-chan)
         metric (.. Gauge build
                    (name "chronojob_status")
+                   (labelNames (into-array ["status"]))
                    (help "number of jobs by status")
                    (register (:registry registry)))]
     (a/go-loop []
