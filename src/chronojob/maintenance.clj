@@ -28,7 +28,10 @@
                  (a/alt!
                    (a/timeout ten-minutes)
                    ([_]
-                    (do-clean comp retention-period)
+                    (try
+                      (do-clean comp retention-period)
+                      (catch Exception e
+                        (log/error e "Exception while jobs cleaning.")))
                     (recur))
 
                    stopper
