@@ -19,14 +19,14 @@
       (log/info "Jobs deleted because retention period had expired"
                 {:jobs res :retention-period retention-period}))))
 
-(def ten-minutes (* 10 60 1000))
+(def one-minute (* 1 60 1000))
 
 (defn cleaner-process
   [comp retention-period]
   (let [stopper (a/promise-chan)
         worker (a/go-loop []
                  (a/alt!
-                   (a/timeout ten-minutes)
+                   (a/timeout one-minute)
                    ([_]
                     (try
                       (do-clean comp retention-period)
