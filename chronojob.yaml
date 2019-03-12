@@ -1,0 +1,25 @@
+name: "chronojob"
+
+deployment:
+  enabled: true
+  replicaCount: 1
+  strategy:
+    type: Recreate
+  image:
+    repository: distribution.flocktory.com/chronojob
+  metrics:
+    enabled: true
+  resources:
+    limits:
+      memory: 2Gi
+    requests:
+      cpu: 1000m
+      memory: 2Gi
+  nodeSelector:
+    flocktory.com/node-type: general
+  env:
+    - name: MODE
+      value: "workers"
+  envFrom:
+    - configMapRef:
+      name: chronojob-db-v000

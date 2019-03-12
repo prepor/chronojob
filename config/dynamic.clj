@@ -1,3 +1,8 @@
+;; hack for using http nexus repos
+(require 'cemerick.pomegranate.aether)
+(cemerick.pomegranate.aether/register-wagon-factory!
+  "http" #(org.apache.maven.wagon.providers.http.HttpWagon.))
+
 {:port 7000
  :db {:uri "jdbc:postgresql://localhost/chronojob"
       :username "chronojob"

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -ex
+
+CURRENT="$(dirname "$0")"
+
+export FLOCKTORY_TEST_CONFIG=config/test_docker_compose.clj
+
+# reset logback to dev config
+mv resources/logback.xml.dev resources/logback.xml
+
+lein eftest

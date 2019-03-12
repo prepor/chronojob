@@ -1,0 +1,38 @@
+env:
+  CHARTMAN_VERSION: fb99c410c932f9fbc818740607e3d774a78eb04c
+
+steps:
+  - label: ':clj: build'
+    command: docker-compose build app
+
+  - wait
+
+  - label: 'Push'
+    command: docker-compose push app
+
+  - wait
+
+  - label: ':hammer: Tests'
+    command: docker-compose run --rm tests
+
+  - wait: ~
+    continue_on_failure: true
+
+  - label: 'Clean'
+    command: docker-compose down
+
+  - wait
+
+  - label: ':s3: Upload'
+    command:
+      - '/buildkite/scripts/upload-s3.sh chronojob.yaml'
+    agents:
+      queue: 'eks2'
+
+  - wait
+
+  - label: ':kubernetes: Deploy'
+    command:
+      - '/buildkite/scripts/spinnaker.sh chronojob'
+    agents:
+      queue: 'eks2'
