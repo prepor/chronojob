@@ -1,0 +1,28 @@
+<configuration scan="true" scanPeriod="5 seconds">
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg %mdc{context}%n</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="angrywoman" class="com.flocktory.angryman.BatchAppender">
+    <endpointUrl>http://angrywoman.dev.flocktory.com/projects/buratino</endpointUrl>
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>ERROR</level>
+    </filter>
+  </appender>
+
+  <logger name="chronojob" level="DEBUG"/>
+  <logger name="flock" level="ERROR"/>
+  <logger name="org.apache.http" level="ERROR"/>
+
+  <logger name="org.eclipse.jetty" level="INFO"/>
+  <logger name="io.pedestal" level="ERROR"/>
+  <logger name="com.mchange.v2.c3p0" level="WARN"/>
+
+  <root level="info">
+    <appender-ref ref="STDOUT" />
+    <appender-ref ref="angrywoman" />
+  </root>
+</configuration>

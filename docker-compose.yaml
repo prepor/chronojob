@@ -1,0 +1,23 @@
+version: '2.1'
+services:
+  chronojob-db:
+    image: ${DOCKER_REPO}/flocktory-pg-schema-load:1.2.1
+    environment:
+      - POSTGRES_PASSWORD=flocktory
+      - POSTGRES_USER=flocktory
+      - POSTGRES_DB=flocktory
+      - DB_SCHEMA=underworld
+    ports:
+      - "5432"
+  app:
+    build:
+      context: .
+      args:
+        - SERVICE=${SERVICE}
+    image: ${DOCKER_REPO}/${SERVICE}:${BUILDKITE_COMMIT}
+  tests:
+    image: ${DOCKER_REPO}/${SERVICE}:${BUILDKITE_COMMIT}
+    command: /scripts/tests
+    depends_on:
+      chronojob-db:
+        condition: service_healthy

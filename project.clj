@@ -3,7 +3,7 @@
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.8.0"]
+  :dependencies [[org.clojure/clojure "1.9.0"]
                  [org.clojure/tools.reader "1.0.0-alpha1"]
                  [http-kit "2.1.18"]
                  [prismatic/schema "1.1.0"]
@@ -34,11 +34,15 @@
 
                  [cljs-http "0.1.39"]
                  [org.clojure/clojurescript "1.7.228"]
-                 [rum "0.8.0"]]
+                 [rum "0.8.0"]
+
+                 [javax.xml.bind/jaxb-api "2.3.0"]]
   :jvm-opts ["-Duser.timezone=GMT"]
   :clean-targets ^{:protect false} ["resources/public/js/" "target"]
   :plugins [[lein-figwheel "0.5.2"]
-            [lein-cljsbuild "1.1.3" :exclusions [[org.clojure/clojure]]]]
+            [lein-cljsbuild "1.1.3" :exclusions [[org.clojure/clojure]]]
+            [lein-parent "0.3.5"]
+            [lein-eftest "0.5.4"]]
   :cljsbuild {:builds [{:id "dev"
                         :source-paths ["src/"]
                         :figwheel {:on-jsload "chronojob.ui/reload-hook" }
