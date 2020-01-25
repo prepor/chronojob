@@ -31,6 +31,7 @@
                  [org.slf4j/jul-to-slf4j "1.7.7"]
                  [org.slf4j/jcl-over-slf4j "1.7.7"]
                  [net.kencochrane.raven/raven-logback "6.0.0"]
+                 [net.logstash.logback/logstash-logback-encoder "6.3"]
 
                  [cljs-http "0.1.39"]
                  [org.clojure/clojurescript "1.7.228"]

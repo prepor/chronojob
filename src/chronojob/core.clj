@@ -82,6 +82,12 @@
   `(let [handler# (fnk ~n ~@body)]
      (def ~n (defhandler* handler#))))
 
+(defnk health
+  []
+  {:status  200
+   :headers {"Content-Type" TextFormat/CONTENT_TYPE_004}
+   :body    "ok"})
+
 (defnk metrics
   [[:component registry]]
   (let [writer (StringWriter.)]
@@ -190,6 +196,7 @@
   [""
    [["/" {:get index}]
     ["/metrics" {:get metrics}]
+    ["/health" {:get health}]
     ["/api"
      [["/job" {:post job}]]]
     ["/dashboard"
