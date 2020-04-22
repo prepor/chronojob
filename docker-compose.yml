@@ -1,0 +1,8 @@
+version: '2.1'
+services:
+  app:
+    build:
+      context: .
+      args:
+        - SERVICE=${SERVICE}
+    image: ${DOCKER_REPO}/${SERVICE}:${BUILDKITE_COMMIT}

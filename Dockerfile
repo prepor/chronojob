@@ -1,4 +1,4 @@
-FROM clojure:lein-2.6.1-alpine
+FROM clojure:openjdk-11-lein-2.9.1
 
 ADD . /opt/build
 
@@ -13,4 +13,4 @@ RUN cd /opt/build && \
 
 EXPOSE 7000
 
-CMD /usr/bin/java -cp /opt/:/opt/chronojob-0.1.0-SNAPSHOT-standalone.jar chronojob.core /opt/config.clj
+CMD java -cp /opt/:/opt/chronojob-0.1.0-SNAPSHOT-standalone.jar chronojob.core /opt/config.clj
