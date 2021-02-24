@@ -1,0 +1,5 @@
+{
+  "cloudProviders": "kubernetes",
+  "email": "dev@flocktory.com",
+  "name": "chronojob"
+}

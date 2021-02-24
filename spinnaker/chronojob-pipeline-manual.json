@@ -1,0 +1,17 @@
+{
+  "schema": "v2",
+  "application": "chronojob",
+  "name": "deploy chronojob",
+  "template": {
+    "artifactAccount": "front50ArtifactCredentials",
+    "reference": "spinnaker://bakeJudgeDeploy",
+    "type": "front50/pipelineTemplate"
+  },
+  "variables": {
+    "app_repo_name": "chronojob",
+    "image_name": "chronojob",
+    "s3_app_values_yml": "chronojob.yaml",
+    "webhook_name": "chronojob",
+    "skip_manual_judgement_step": "false"
+  }
+}

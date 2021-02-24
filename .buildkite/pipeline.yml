@@ -20,6 +20,18 @@ steps:
 
   - wait
 
+  - label: ':spinnaker: Create spinnaker application'
+    command:
+      - 'spin application save -f spinnaker/chronojob-application.json'
+
+  - wait
+
+  - label: ':spinnaker: Create spinnaker pipeline'
+    command:
+      - 'spin pipeline save -f spinnaker/chronojob-pipeline-manual.json'
+
+  - wait
+  
   - label: ':kubernetes: Deploy'
     branches: 'master'
     command:
