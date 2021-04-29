@@ -35,3 +35,11 @@ deployment:
 
 service:
   enabled: true
+
+istio:
+  vservice:
+    enabled: true
+  gateway:
+    enabled: false
+  sidecar:
+    enabled: true

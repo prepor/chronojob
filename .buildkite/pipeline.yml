@@ -1,5 +1,5 @@
 env:
-  CHARTMAN_VERSION: 36ca1bdb1e011be3a314b716a59444bf51875f1f
+  CHARTMAN_VERSION: 7bf63961c7afedf4eb2467e2f29e48336bf80946
 
 steps:
   - label: ':docker: Build'
@@ -31,7 +31,7 @@ steps:
       - 'spin pipeline save -f spinnaker/chronojob-pipeline-manual.json'
 
   - wait
-  
+
   - label: ':kubernetes: Deploy'
     branches: 'master'
     command:
