@@ -10,6 +10,11 @@ steps:
   - label: ':docker: Push'
     command: docker-compose push app
 
+  - label: "gitleaks"
+    branches: "master"
+    command: /buildkite/scripts/gitleaks.sh 
+    soft_fail:
+      - exit_status: 1
   - wait
 
   - label: ':s3: Upload'
