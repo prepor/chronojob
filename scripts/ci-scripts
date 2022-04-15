@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+
+export $(cat .env | xargs)
+
+# Download ci scripts from docker image
+CID=$(docker create ${DOCKER_REPO}/flocktory-ci-scripts:${CI_SCRIPTS_VERSION})
+docker cp ${CID}:/scripts .
+docker rm ${CID}

@@ -1,0 +1,39 @@
+name: "chronojob"
+
+deployment:
+  enabled: true
+  replicaCount: 1
+  terminationGracePeriodSeconds: 20
+  containerPort: 7000
+  strategy:
+    type: Recreate
+  image:
+    repository: distribution.flocktory.com/chronojob
+  probes:
+    enabled: true
+    port: 7000
+  metrics:
+    enabled: true
+    port: 7000
+  envFrom:
+    - secretRef:
+        name: chronojob-db-v000
+  resources:
+    limits:
+      memory: 512M
+    requests:
+      cpu: 500m
+      memory: 512M
+  nodeSelector:
+    flocktory.com/node-type: general
+
+service:
+  enabled: true
+
+istio:
+  vservice:
+    enabled: false
+  gateway:
+    enabled: false
+  sidecar:
+    enabled: false
