@@ -1,16 +1,6 @@
-FROM clojure:openjdk-11-lein-2.9.1
+FROM distribution.flocktory.com/flocktory-jdk11-oracle-onbuild:0.2
 
-ADD . /opt/build
+# For running offline without retrieving deps from Nexus at runtime.
+RUN find /root/.m2 -name _remote.repositories -type f -delete
 
-RUN cd /opt/build && \
-    lein cljsbuild once prod && \
-    lein uberjar && \
-    cp target/chronojob-0.1.0-SNAPSHOT-standalone.jar /opt/ && \
-    cp config/prod.clj /opt/config.clj && \
-    cp config/logback_prod.xml /opt/logback.xml && \
-    cd / && \
-    rm -rf /opt/build
-
-EXPOSE 7000
-
-CMD java -cp /opt/:/opt/chronojob-0.1.0-SNAPSHOT-standalone.jar chronojob.core /opt/config.clj
+CMD ["lein", "-o", "trampoline", "run", "config/dynamic.clj"]

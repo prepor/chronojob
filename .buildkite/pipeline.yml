@@ -2,13 +2,20 @@ env:
   CHARTMAN_VERSION: 7bf63961c7afedf4eb2467e2f29e48336bf80946
 
 steps:
-  - label: ':docker: Build'
-    command: docker-compose build app
+  - label: ':docker: build && push'
+    command:
+      - docker-compose build app
+      - docker-compose push app
 
   - wait
 
-  - label: ':docker: Push'
-    command: docker-compose push app
+  - label: ":kubernetes: yandex cloud deploy"
+    branches: 'ark-2022/cpo'
+    agents:
+      queue: 'ark-2022/cpo'
+    command:
+      - aws s3 cp --endpoint-url=https://storage.yandexcloud.net s3://flocktory-helm/chartman/39910c18d71907a625fab39781bc91c40fe2fa7a/chartman-1.0.0.tgz chartman-1.0.0.tgz
+      - '/buildkite/scripts/helm.sh chronojob production deploy/chronojob-yac.yaml distribution.flocktory.com/${BUILDKITE_PIPELINE_NAME}:${BUILDKITE_COMMIT}'
 
   - label: "gitleaks"
     branches: "master"
