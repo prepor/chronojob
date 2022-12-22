@@ -64,25 +64,28 @@
 (defn take!
   [comp jobs]
   (a/thread
-    (jdbc/with-db-transaction [t (:db comp)]
-      (sql/xact-lock t :take-process (int 1))
-      (let [data (-> {:select [:*]
-                      :from [:jobs]
-                      :where [:and
-                              [:< :do_at :%now]
-                              [:or
-                               ;; how to deal with enums and honeysql better?
-                               [:= :status #sql/raw "'pending'"]
-                               [:= :status #sql/raw "'redo'"]]]
-                      :order-by [[:do_at :asc]]
-                      :limit 100}
-                     (sql/query t))]
-        (when (seq data)
-          (jdbc/update! t :jobs {:status :status/inprogress
-                                 :taked_at (time/now)}
-                        [(str "id in (" (str/join "," (map :id data)) ")")])
-          (doseq [job data]
-            (a/>!! jobs job)))))))
+    (try
+      (jdbc/with-db-transaction [t (:db comp)]
+        (sql/xact-lock t :take-process (int 1))
+        (let [data (-> {:select [:*]
+                        :from [:jobs]
+                        :where [:and
+                                [:< :do_at :%now]
+                                [:or
+                                 ;; how to deal with enums and honeysql better?
+                                 [:= :status #sql/raw "'pending'"]
+                                 [:= :status #sql/raw "'redo'"]]]
+                        :order-by [[:do_at :asc]]
+                        :limit 100}
+                       (sql/query t))]
+          (when (seq data)
+            (jdbc/update! t :jobs {:status :status/inprogress
+                                   :taked_at (time/now)}
+                          [(str "id in (" (str/join "," (map :id data)) ")")])
+            (doseq [job data]
+              (a/>!! jobs job)))))
+      (catch Exception e
+        (log/error e "Exception while processing")))))
 
 (defn taker-process
   [comp stopper]
